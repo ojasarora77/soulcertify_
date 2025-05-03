@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
-import { CertificateList } from "./certificates/_components/CertificateList";
-import { IssueCertificateForm } from "./certificates/_components/IssueCertificateForm";
+import { CertificateList } from "./_components/CertificateList";
+import { IssueCertificateForm } from "./_components/IssueCertificateForm";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
@@ -11,7 +11,7 @@ const CertificatesPage = () => {
   const { address: connectedAddress, isConnected } = useAccount();
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<"issue" | "view">("view");
-  
+
   // Get the Certificate contract
   const { data: certificateContract } = useScaffoldContract({
     contractName: "Certificate",
