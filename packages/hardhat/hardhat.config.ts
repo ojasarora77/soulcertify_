@@ -59,6 +59,10 @@ const config: HardhatUserConfig = {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
     },
+    l1xTestnet: {
+      url: '<https://v2-testnet-rpc.l1x.foundation>',
+      accounts: [deployerPrivateKey],
+    },
     sepolia: {
       url: `https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
