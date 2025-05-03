@@ -57,6 +57,9 @@
     "node": ">=20.18.3"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.5"
+    "@openzeppelin/contracts": "^4.9.5",
+    "framer-motion": "^12.9.4",
+    "process-env": "^2.0.2",
+    "web3.storage": "^4.5.5"
   }
 }

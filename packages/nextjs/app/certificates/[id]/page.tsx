@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Address, Balance } from "~~/components/scaffold-eth";
+import { Address } from "~~/components/scaffold-eth";
 import { useAccount } from "wagmi";
+import { motion } from "framer-motion";
 import { 
   AcademicCapIcon, 
   CheckCircleIcon, 
@@ -12,18 +13,27 @@ import {
   XCircleIcon, 
   ArrowLeftIcon,
   ClipboardDocumentCheckIcon,
+  CalendarIcon,
+  UserIcon,
+  BuildingLibraryIcon,
+  DocumentCheckIcon,
+  CubeTransparentIcon,
+  LinkIcon,
+  ShieldCheckIcon,
+  ClockIcon
 } from "@heroicons/react/24/outline";
 import { useScaffoldContract, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 
 interface Certificate {
+  id: number;
   studentName: string;
   universityName: string;
   yearOfGraduation: number;
   degree: string;
   major: string;
-  skills: readonly string[]; // Mark as readonly to match the contract return type
+  skills: readonly string[];
   documentURI: string;
   isApproved: boolean;
   isRevoked: boolean;
@@ -49,13 +59,6 @@ const CertificateDetailPage = () => {
     functionName: "owner",
   });
 
-  // Get certificate data
-  const { data: certificateData, isLoading: isCertificateLoading } = useScaffoldReadContract({
-    contractName: "Certificate",
-    functionName: "getCertificate",
-    args: [BigInt(certificateId)],
-  });
-
   // Write functions for certificate actions
   const { writeContractAsync: approveCertificateAsync, isPending: isApprovePending } = useScaffoldWriteContract({
     contractName: "Certificate",
@@ -74,23 +77,29 @@ const CertificateDetailPage = () => {
     }
   }, [connectedAddress, contractOwner]);
 
-  // Process certificate data when it's loaded
+  // Fetch certificate data
   useEffect(() => {
-    if (certificateData) {
-      setCertificate({
-        studentName: certificateData[0],
-        universityName: certificateData[1],
-        yearOfGraduation: Number(certificateData[2]),
-        degree: certificateData[3],
-        major: certificateData[4],
-        skills: certificateData[5],
-        documentURI: certificateData[6],
-        isApproved: certificateData[7],
-        isRevoked: certificateData[8],
-      });
-      setIsLoading(false);
-    }
-  }, [certificateData]);
+    const fetchCertificate = async () => {
+      if (!certificateId) return;
+      
+      try {
+        const response = await fetch(`/api/certificates/${certificateId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch certificate');
+        }
+        
+        const data = await response.json();
+        setCertificate(data);
+      } catch (error) {
+        console.error('Error fetching certificate:', error);
+        notification.error('Failed to fetch certificate details');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCertificate();
+  }, [certificateId]);
 
   // Handle approve certificate action
   const handleApprove = async () => {
@@ -127,10 +136,13 @@ const CertificateDetailPage = () => {
   };
 
   // Handle loading state
-  if (isLoading || isCertificateLoading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg"></span>
+        <div className="flex flex-col items-center">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+          <p className="mt-4 text-base-content/70">Loading certificate details...</p>
+        </div>
       </div>
     );
   }
@@ -138,202 +150,316 @@ const CertificateDetailPage = () => {
   // Handle case when certificate is not found
   if (!certificate) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="alert alert-error max-w-md">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col items-center justify-center min-h-screen px-4"
+      >
+        <div className="alert alert-error max-w-md shadow-lg">
           <XCircleIcon className="h-6 w-6" />
-          <span>Certificate not found.</span>
+          <span>Certificate not found or may have been removed.</span>
         </div>
-        <Link href="/certificates" className="btn btn-primary mt-4">
-          <ArrowLeftIcon className="h-4 w-4 mr-2" />
+        <Link href="/certificates" className="btn btn-primary mt-6 gap-2">
+          <ArrowLeftIcon className="h-4 w-4" />
           Back to Certificates
         </Link>
-      </div>
+      </motion.div>
     );
   }
 
+  // Get status details for display
+  const getStatusDetails = () => {
+    if (certificate.isRevoked) {
+      return {
+        color: "text-error",
+        bgColor: "bg-error/10",
+        borderColor: "border-error/30",
+        icon: <XCircleIcon className="h-5 w-5 text-error" />,
+        text: "Revoked",
+        description: "This certificate has been revoked and is no longer valid."
+      };
+    } else if (certificate.isApproved) {
+      return {
+        color: "text-success",
+        bgColor: "bg-success/10",
+        borderColor: "border-success/30",
+        icon: <CheckCircleIcon className="h-5 w-5 text-success" />,
+        text: "Approved & Valid",
+        description: "This certificate is approved and valid on the blockchain."
+      };
+    } else {
+      return {
+        color: "text-warning",
+        bgColor: "bg-warning/10",
+        borderColor: "border-warning/30",
+        icon: <ClockIcon className="h-5 w-5 text-warning" />,
+        text: "Pending Approval",
+        description: "This certificate is waiting for the student's approval."
+      };
+    }
+  };
+
+  const statusDetails = getStatusDetails();
+
   return (
-    <div className="flex flex-col py-8 px-4 lg:px-8 max-w-6xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start mb-6">
-        <Link href="/certificates" className="btn btn-sm btn-ghost mb-4 sm:mb-0">
-          <ArrowLeftIcon className="h-4 w-4 mr-2" />
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen py-12 px-4 lg:px-8 max-w-7xl mx-auto"
+    >
+      {/* Back button and certificate status header */}
+      <div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <Link href="/certificates" className="btn btn-outline btn-sm gap-2">
+          <ArrowLeftIcon className="h-4 w-4" />
           Back to Certificates
         </Link>
-        <div className="flex flex-col items-end">
-          <div className="badge badge-lg mb-2">
-            Certificate #{certificateId}
+        
+        <div className="flex items-center gap-2">
+          <div className="badge badge-lg badge-outline">Certificate #{certificateId}</div>
+          <div className={`badge badge-lg ${
+            certificate.isRevoked ? "badge-error" : 
+            certificate.isApproved ? "badge-success" : 
+            "badge-warning"
+          } gap-1`}>
+            {statusDetails.icon}
+            {statusDetails.text}
           </div>
-          {certificate.isApproved && !certificate.isRevoked && (
-            <div className="badge badge-success gap-1">
-              <CheckCircleIcon className="h-4 w-4" />
-              Approved & Valid
-            </div>
-          )}
-          {!certificate.isApproved && !certificate.isRevoked && (
-            <div className="badge badge-warning gap-1">
-              <XCircleIcon className="h-4 w-4" />
-              Pending Approval
-            </div>
-          )}
-          {certificate.isRevoked && (
-            <div className="badge badge-error gap-1">
-              <XCircleIcon className="h-4 w-4" />
-              Revoked
-            </div>
-          )}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        {/* Main certificate content */}
-        <div className="col-span-1 lg:col-span-3 flex flex-col">
-          <div className="bg-base-100 rounded-box shadow-xl p-6 mb-6">
-            <h1 className="text-3xl font-bold mb-2">{certificate.degree}</h1>
-            <h2 className="text-xl text-base-content/70 mb-6">in {certificate.major}</h2>
+      {/* Status alert banner */}
+      <div className={`alert ${statusDetails.bgColor} ${statusDetails.borderColor} border mb-8`}>
+        {statusDetails.icon}
+        <div>
+          <h3 className={`font-bold ${statusDetails.color}`}>{statusDetails.text}</h3>
+          <div className="text-sm">{statusDetails.description}</div>
+        </div>
+      </div>
 
-            <div className="divider"></div>
-
-            <div className="flex flex-col space-y-4 mt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-8 gap-8">
+        {/* Main certificate content - 5 columns on large screens */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="col-span-1 lg:col-span-5"
+        >
+          <div className={`bg-base-100 rounded-2xl shadow-xl p-8 border ${statusDetails.borderColor}`}>
+            <div className="flex justify-between items-start">
               <div>
-                <h3 className="text-lg font-semibold">Student</h3>
-                <p className="text-xl">{certificate.studentName}</p>
+                <h1 className="text-3xl font-bold mb-1">{certificate.degree}</h1>
+                <h2 className="text-xl text-base-content/70">in {certificate.major}</h2>
               </div>
-
-              <div>
-                <h3 className="text-lg font-semibold">University</h3>
-                <p className="flex items-center text-xl">
-                  <AcademicCapIcon className="h-5 w-5 mr-2" />
-                  {certificate.universityName}
-                </p>
+              <div className={`p-2 rounded-full ${statusDetails.bgColor}`}>
+                {statusDetails.icon}
               </div>
+            </div>
 
-              <div>
-                <h3 className="text-lg font-semibold">Year of Graduation</h3>
-                <p className="text-xl">{certificate.yearOfGraduation}</p>
-              </div>
+            <div className="divider my-6"></div>
 
-              <div>
-                <h3 className="text-lg font-semibold">Skills</h3>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {certificate.skills.map((skill, index) => (
-                    <span key={index} className="badge badge-outline p-3">{skill}</span>
-                  ))}
+            {/* Certificate content with improved layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12">
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-base-content/60">STUDENT</p>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="h-5 w-5 text-primary/70" />
+                  <p className="text-xl font-semibold">{certificate.studentName}</p>
                 </div>
               </div>
 
-              {certificate.documentURI && (
-                <div>
-                  <h3 className="text-lg font-semibold">Certificate Document</h3>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-base-content/60">UNIVERSITY</p>
+                <div className="flex items-center gap-2">
+                  <BuildingLibraryIcon className="h-5 w-5 text-primary/70" />
+                  <p className="text-xl font-semibold">{certificate.universityName}</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-base-content/60">GRADUATION YEAR</p>
+                <div className="flex items-center gap-2">
+                  <CalendarIcon className="h-5 w-5 text-primary/70" />
+                  <p className="text-xl font-semibold">{certificate.yearOfGraduation}</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-base-content/60">CERTIFICATE ID</p>
+                <div className="flex items-center gap-2">
+                  <DocumentCheckIcon className="h-5 w-5 text-primary/70" />
+                  <p className="text-xl font-semibold font-mono">#{certificateId}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 space-y-2">
+              <p className="text-sm font-medium text-base-content/60">SKILLS & COMPETENCIES</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {certificate.skills && certificate.skills.length > 0 ? (
+                  certificate.skills.map((skill, index) => (
+                    <span key={index} className="badge badge-lg badge-primary badge-outline p-3">
+                      {skill}
+                    </span>
+                  ))
+                ) : (
+                  <p className="text-base-content/50 italic">No skills listed</p>
+                )}
+              </div>
+            </div>
+
+            {certificate.documentURI && (
+              <div className="mt-8 space-y-2">
+                <p className="text-sm font-medium text-base-content/60">CERTIFICATE DOCUMENT</p>
+                <div className="flex items-center gap-2">
+                  <DocumentIcon className="h-5 w-5 text-primary/70" />
                   <a
                     href={certificate.documentURI.startsWith("ipfs://") 
                       ? `https://ipfs.io/ipfs/${certificate.documentURI.replace("ipfs://", "")}` 
                       : certificate.documentURI}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-outline btn-accent mt-2"
+                    className="text-primary underline hover:text-primary/80 transition-colors"
                   >
-                    <DocumentIcon className="h-5 w-5 mr-2" />
-                    View Document
+                    View Official Certificate Document
                   </a>
                 </div>
-              )}
+              </div>
+            )}
+
+            {/* Certificate actions with improved styling */}
+            <div className="mt-12 pt-6 border-t border-base-300">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <ShieldCheckIcon className="h-5 w-5 mr-2 text-primary" />
+                Certificate Actions
+              </h3>
+
+              <div className="flex flex-wrap gap-3">
+                {!certificate.isApproved && !certificate.isRevoked && !isAdmin && (
+                  <button
+                    className="btn btn-success btn-lg gap-2"
+                    onClick={handleApprove}
+                    disabled={isApprovePending}
+                  >
+                    {isApprovePending ? (
+                      <span className="loading loading-spinner loading-sm"></span>
+                    ) : (
+                      <CheckCircleIcon className="h-5 w-5" />
+                    )}
+                    Approve Certificate
+                  </button>
+                )}
+
+                {certificate.isApproved && !certificate.isRevoked && isAdmin && (
+                  <div className="dropdown dropdown-top">
+                    <button
+                      tabIndex={0}
+                      className="btn btn-error btn-lg gap-2"
+                    >
+                      <XCircleIcon className="h-5 w-5" />
+                      Revoke Certificate
+                    </button>
+                    <div tabIndex={0} className="dropdown-content z-10 p-4 shadow-xl bg-base-100 rounded-box w-72 mt-4">
+                      <h3 className="font-bold text-error mb-2">Warning: Irreversible Action</h3>
+                      <p className="mb-4 text-sm">Revoking this certificate cannot be undone. Are you sure?</p>
+                      <div className="flex justify-end gap-2">
+                        <button className="btn btn-sm" onClick={() => (document.activeElement as HTMLElement)?.blur()}>Cancel</button>
+                        <button
+                          className="btn btn-sm btn-error"
+                          onClick={handleRevoke}
+                          disabled={isRevokePending}
+                        >
+                          {isRevokePending ? (
+                            <span className="loading loading-spinner loading-xs"></span>
+                          ) : (
+                            "Confirm Revoke"
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+        </motion.div>
 
-          {/* Certificate actions */}
-          <div className="bg-base-200 rounded-box shadow-lg p-6">
-            <h3 className="text-lg font-semibold mb-4">Certificate Actions</h3>
-
-            <div className="flex flex-wrap gap-3">
-              {!certificate.isApproved && !certificate.isRevoked && !isAdmin && (
-                <button
-                  className="btn btn-success"
-                  onClick={handleApprove}
-                  disabled={isApprovePending}
-                >
-                  {isApprovePending ? (
-                    <span className="loading loading-spinner loading-sm"></span>
-                  ) : (
-                    <CheckCircleIcon className="h-5 w-5 mr-2" />
-                  )}
-                  Approve Certificate
-                </button>
-              )}
-
-              {certificate.isApproved && !certificate.isRevoked && isAdmin && (
-                <button
-                  className="btn btn-error"
-                  onClick={handleRevoke}
-                  disabled={isRevokePending}
-                >
-                  {isRevokePending ? (
-                    <span className="loading loading-spinner loading-sm"></span>
-                  ) : (
-                    <XCircleIcon className="h-5 w-5 mr-2" />
-                  )}
-                  Revoke Certificate
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Blockchain verification panel */}
-        <div className="col-span-1 lg:col-span-2">
-          <div className="bg-base-100 rounded-box shadow-xl p-6 sticky top-24">
-            <h3 className="text-xl font-bold mb-4 flex items-center">
-              <ClipboardDocumentCheckIcon className="h-5 w-5 mr-2" />
+        {/* Blockchain verification panel - 3 columns on large screens */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="col-span-1 lg:col-span-3"
+        >
+          <div className="bg-base-100 rounded-2xl shadow-xl p-8 border border-base-300 sticky top-24">
+            <h3 className="text-xl font-bold mb-6 flex items-center">
+              <CubeTransparentIcon className="h-6 w-6 mr-2 text-primary" />
               Blockchain Verification
             </h3>
 
-            <div className="divider"></div>
-
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm font-semibold">Contract Address</p>
+            <div className="space-y-6">
+              <div className="bg-base-200 p-4 rounded-xl">
+                <p className="text-sm font-medium text-base-content/60 mb-1">CONTRACT ADDRESS</p>
                 <Address address={certificateContract?.address} format="long" />
+                
+                <div className="flex justify-end mt-2">
+                  <a
+                    href={`${targetNetwork.blockExplorers?.default.url}/address/${certificateContract?.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-xs btn-ghost gap-1"
+                  >
+                    <LinkIcon className="h-3 w-3" />
+                    View
+                  </a>
+                </div>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold">Token ID</p>
-                <p className="font-mono">{certificateId}</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-base-200 p-4 rounded-xl">
+                  <p className="text-sm font-medium text-base-content/60 mb-1">TOKEN ID</p>
+                  <p className="font-mono font-semibold">{certificateId}</p>
+                </div>
+
+                <div className="bg-base-200 p-4 rounded-xl">
+                  <p className="text-sm font-medium text-base-content/60 mb-1">NETWORK</p>
+                  <p className="font-semibold flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
+                    {targetNetwork.name}
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold">Network</p>
-                <p>{targetNetwork.name}</p>
+              <div className="bg-base-200 p-4 rounded-xl">
+                <p className="text-sm font-medium text-base-content/60 mb-1">ISSUED BY</p>
+                <Address address={contractOwner || ""} format="short" />
               </div>
 
-              <div>
-                <p className="text-sm font-semibold">Status</p>
-                {certificate.isApproved && !certificate.isRevoked ? (
-                  <div className="badge badge-success">Valid</div>
-                ) : certificate.isRevoked ? (
-                  <div className="badge badge-error">Revoked</div>
-                ) : (
-                  <div className="badge badge-warning">Pending</div>
-                )}
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold">Issued By</p>
-                <Address address={contractOwner || ""} format="long" />
+              <div className={`${statusDetails.bgColor} p-4 rounded-xl`}>
+                <p className="text-sm font-medium text-base-content/60 mb-1">STATUS</p>
+                <div className="flex items-center gap-2">
+                  {statusDetails.icon}
+                  <p className={`font-semibold ${statusDetails.color}`}>{statusDetails.text}</p>
+                </div>
               </div>
 
               <div className="pt-4">
                 <a
-                  href={`${targetNetwork.blockExplorers?.default.url}/address/${certificateContract?.address}`}
+                  href={`${targetNetwork.blockExplorers?.default.url}/token/${certificateContract?.address}?a=${certificateId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-sm btn-outline btn-primary w-full"
+                  className="btn btn-primary w-full gap-2"
                 >
-                  View on Block Explorer
+                  <LinkIcon className="h-4 w-4" />
+                  Verify On Blockchain
                 </a>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
