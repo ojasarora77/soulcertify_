@@ -1,72 +1,87 @@
 "use client";
 
-import Link from "next/link";
-import type { NextPage } from "next";
+import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { CertificateList } from "../components/certificates/_components/CertificateList";
+import { IssueCertificateForm } from "../components/certificates/_components/IssueCertificateForm";
 import { Address } from "~~/components/scaffold-eth";
+import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-const Home: NextPage = () => {
-  const { address: connectedAddress } = useAccount();
+const CertificatesPage = () => {
+  const { address: connectedAddress, isConnected } = useAccount();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [activeTab, setActiveTab] = useState<"issue" | "view">("view");
+  
+  // Get the Certificate contract
+  const { data: certificateContract } = useScaffoldContract({
+    contractName: "Certificate",
+  });
 
-  return (
-    <>
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
-          </div>
+  // Read the owner of the contract
+  const { data: contractOwner } = useScaffoldReadContract({
+    contractName: "Certificate",
+    functionName: "owner",
+  });
 
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
+  // Check if the connected wallet is the admin (contract owner)
+  useEffect(() => {
+    if (connectedAddress && contractOwner) {
+      setIsAdmin(connectedAddress.toLowerCase() === contractOwner.toLowerCase());
+    } else {
+      setIsAdmin(false);
+    }
+  }, [connectedAddress, contractOwner]);
 
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col md:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
+  // If not connected, show a message
+  if (!isConnected) {
+    return (
+      <div className="flex flex-col items-center mt-10 p-5">
+        <h1 className="text-3xl font-bold mb-6">Certificate Management</h1>
+        <div className="alert alert-info">
+          <div>
+            <span>Please connect your wallet to access the certificate management system.</span>
           </div>
         </div>
       </div>
-    </>
+    );
+  }
+
+  return (
+    <div className="flex flex-col py-8 px-4 lg:px-8 w-full max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Certificate Management</h1>
+        <div className="text-xl mt-2 sm:mt-0">
+          <span className="mr-2">Connected as:</span>
+          <Address address={connectedAddress} />
+        </div>
+      </div>
+
+      {/* Admin-only tabs */}
+      {isAdmin && (
+        <div className="tabs tabs-boxed mb-6 self-start">
+          <a
+            className={`tab ${activeTab === "view" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("view")}
+          >
+            View Certificates
+          </a>
+          <a
+            className={`tab ${activeTab === "issue" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("issue")}
+          >
+            Issue Certificate
+          </a>
+        </div>
+      )}
+
+      {/* Tab content */}
+      {activeTab === "issue" && isAdmin ? (
+        <IssueCertificateForm />
+      ) : (
+        <CertificateList isAdmin={isAdmin} />
+      )}
+    </div>
   );
 };
 
-export default Home;
+export default CertificatesPage;
