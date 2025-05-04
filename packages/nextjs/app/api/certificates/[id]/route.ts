@@ -1,6 +1,6 @@
 // app/api/certificates/[id]/route.ts
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createPublicClient, http } from 'viem';
 import { arbitrumSepolia } from 'viem/chains';
 import deployedContracts from '~~/contracts/deployedContracts';
@@ -11,12 +11,12 @@ const publicClient = createPublicClient({
   transport: http(),
 });
 
+// This is the correct signature for Next.js App Router API routes
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) {
-  // Need to await params in modern Next.js
-  const id = await params.id;
+  const id = context.params.id;
 
   // Validate the ID
   if (!id || isNaN(Number(id))) {
