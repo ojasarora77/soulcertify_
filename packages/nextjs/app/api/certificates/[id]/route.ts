@@ -11,12 +11,14 @@ const publicClient = createPublicClient({
   transport: http(),
 });
 
-// This is the correct signature for Next.js App Router API routes
+// Correct signature for Next.js 15 App Router API routes
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  // In Next.js 15, you need to destructure the id from params
+  // and await the params object itself, not its properties
+  const { id } = await params;
 
   // Validate the ID
   if (!id || isNaN(Number(id))) {
