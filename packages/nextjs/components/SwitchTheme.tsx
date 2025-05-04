@@ -34,8 +34,8 @@ export const SwitchTheme = ({ className }: { className?: string }) => {
         checked={isDarkMode}
       />
       <label htmlFor="theme-toggle" className={`swap swap-rotate ${!isDarkMode ? "swap-active" : ""}`}>
-        <SunIcon className="swap-on h-5 w-5" />
-        <MoonIcon className="swap-off h-5 w-5" />
+        <SunIcon className="swap-on h-5 w-5 text-orange-400" />
+        <MoonIcon className="swap-off h-5 w-5 text-indigo-900" />
       </label>
     </div>
   );

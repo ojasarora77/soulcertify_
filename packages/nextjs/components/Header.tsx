@@ -25,11 +25,11 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/certificates",
     icon: <DocumentTextIcon className="h-4 w-4" />,
   },
-  {
+  /* {
     label: "Debug Contracts",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,
-  },
+  }, */
 ];
 
 export const HeaderMenuLinks = () => {
@@ -99,7 +99,7 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/SoulCertify_logo.png" />
+            <Image alt="SE2 logo" className="cursor-pointer" fill src="/SoulCertify_logo_bg.png" />
           </div>
           <div className="flex flex-col">
             <span className="font-bold leading-tight">SoulCertify</span>

@@ -8,48 +8,48 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#93BBFB",
-          "primary-content": "#212638",
-          secondary: "#DAE8FF",
-          "secondary-content": "#212638",
-          accent: "#93BBFB",
-          "accent-content": "#212638",
-          neutral: "#212638",
+          primary: "#FF8A50",  // Light orange
+          "primary-content": "#110D2C",
+          secondary: "#FFD0B5", // Lighter orange
+          "secondary-content": "#110D2C",
+          accent: "#FF6B2C", // Brighter orange
+          "accent-content": "#110D2C",
+          neutral: "#110D2C",
           "neutral-content": "#ffffff",
           "base-100": "#ffffff",
-          "base-200": "#f4f8ff",
-          "base-300": "#DAE8FF",
-          "base-content": "#212638",
-          info: "#93BBFB",
+          "base-200": "#FFF6F1", // Very light orange
+          "base-300": "#FFD0B5", // Light orange
+          "base-content": "#110D2C",
+          info: "#FF8A50",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
           "--rounded-btn": "9999rem",
-          ".tooltip": { "--tooltip-tail": "6px" },
+          ".tooltip": { "--tooltip-tail": "6px", "--tooltip-color": "oklch(var(--p))" },
           ".link": { textUnderlineOffset: "2px" },
           ".link:hover": { opacity: "80%" },
         },
       },
       {
         dark: {
-          primary: "#212638",
-          "primary-content": "#F9FBFF",
-          secondary: "#323f61",
-          "secondary-content": "#F9FBFF",
-          accent: "#4969A6",
-          "accent-content": "#F9FBFF",
-          neutral: "#F9FBFF",
-          "neutral-content": "#385183",
-          "base-100": "#385183",
-          "base-200": "#2A3655",
-          "base-300": "#212638",
-          "base-content": "#F9FBFF",
-          info: "#385183",
+          primary: "#FF8A50", // Light orange
+          "primary-content": "#FFF6F1",
+          secondary: "#1E1B3D", // Darker blue
+          "secondary-content": "#FFF6F1",
+          accent: "#FF6B2C", // Brighter orange
+          "accent-content": "#FFF6F1",
+          neutral: "#FFF6F1",
+          "neutral-content": "#110D2C",
+          "base-100": "#110D2C", // Dark blue
+          "base-200": "#1E1B3D", // Less dark blue
+          "base-300": "#2E2A5C", // Medium dark blue
+          "base-content": "#FFF6F1",
+          info: "#1E1B3D",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
           "--rounded-btn": "9999rem",
-          ".tooltip": { "--tooltip-tail": "6px", "--tooltip-color": "oklch(var(--p))" },
+          ".tooltip": { "--tooltip-tail": "6px" },
           ".link": { textUnderlineOffset: "2px" },
           ".link:hover": { opacity: "80%" },
         },

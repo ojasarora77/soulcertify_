@@ -29,7 +29,7 @@ export const CertificateList = ({ isAdmin }: { isAdmin: boolean }) => {
   const { data: certificateIds, refetch: refetchCertificateIds } = useScaffoldReadContract({
     contractName: "Certificate",
     functionName: "getCertificatesByStudent",
-    args: connectedAddress ? [connectedAddress] : undefined,
+    args: [connectedAddress] as const,
   });
 
   // Read the total number of certificates (admin only)

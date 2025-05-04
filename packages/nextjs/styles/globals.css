@@ -30,3 +30,17 @@ p {
 .btn.btn-ghost {
   @apply shadow-none;
 }
+
+/* Add styling for the toggle component to match LayerX theme */
+.toggle-primary {
+  @apply bg-opacity-40;
+}
+
+.toggle-primary:checked {
+  @apply bg-primary border-primary;
+}
+
+/* Adjust link colors for better visibility */
+a {
+  @apply text-primary hover:text-accent;
+}

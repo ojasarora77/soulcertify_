@@ -392,16 +392,18 @@ const CertificateDetailPage = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="col-span-1 lg:col-span-3"
         >
-          <div className="bg-base-100 rounded-2xl shadow-xl p-8 border border-base-300 sticky top-24">
-            <h3 className="text-xl font-bold mb-6 flex items-center">
+          <div className="bg-base-100 rounded-2xl shadow-xl p-6 border border-base-300 lg:sticky lg:top-24 max-h-[calc(100vh-6rem)] overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4 flex items-center">
               <CubeTransparentIcon className="h-6 w-6 mr-2 text-primary" />
               Blockchain Verification
             </h3>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="bg-base-200 p-4 rounded-xl">
                 <p className="text-sm font-medium text-base-content/60 mb-1">CONTRACT ADDRESS</p>
-                <Address address={certificateContract?.address} format="long" />
+                <div className="break-all">
+                  <Address address={certificateContract?.address} format="long" />
+                </div>
                 
                 <div className="flex justify-end mt-2">
                   <a
@@ -416,16 +418,16 @@ const CertificateDetailPage = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-base-200 p-4 rounded-xl">
                   <p className="text-sm font-medium text-base-content/60 mb-1">TOKEN ID</p>
-                  <p className="font-mono font-semibold">{certificateId}</p>
+                  <p className="font-mono font-semibold truncate">{certificateId}</p>
                 </div>
 
                 <div className="bg-base-200 p-4 rounded-xl">
                   <p className="text-sm font-medium text-base-content/60 mb-1">NETWORK</p>
-                  <p className="font-semibold flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
+                  <p className="font-semibold flex items-center gap-1 truncate">
+                    <span className="w-2 h-2 rounded-full bg-primary inline-block flex-shrink-0"></span>
                     {targetNetwork.name}
                   </p>
                 </div>
@@ -433,18 +435,20 @@ const CertificateDetailPage = () => {
 
               <div className="bg-base-200 p-4 rounded-xl">
                 <p className="text-sm font-medium text-base-content/60 mb-1">ISSUED BY</p>
-                <Address address={contractOwner || ""} format="short" />
+                <div className="break-all">
+                  <Address address={contractOwner || ""} format="short" />
+                </div>
               </div>
 
               <div className={`${statusDetails.bgColor} p-4 rounded-xl`}>
                 <p className="text-sm font-medium text-base-content/60 mb-1">STATUS</p>
                 <div className="flex items-center gap-2">
                   {statusDetails.icon}
-                  <p className={`font-semibold ${statusDetails.color}`}>{statusDetails.text}</p>
+                  <p className={`font-semibold ${statusDetails.color} truncate`}>{statusDetails.text}</p>
                 </div>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-2">
                 <a
                   href={`${targetNetwork.blockExplorers?.default.url}/token/${certificateContract?.address}?a=${certificateId}`}
                   target="_blank"

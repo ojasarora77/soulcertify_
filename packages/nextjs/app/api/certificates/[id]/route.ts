@@ -11,21 +11,20 @@ const publicClient = createPublicClient({
   transport: http(),
 });
 
-// Correct signature for Next.js 15 App Router API routes
+// This is the correct signature for Next.js 15 Route Handlers
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  // In Next.js 15, you need to destructure the id from params
-  // and await the params object itself, not its properties
-  const { id } = await params;
-
-  // Validate the ID
-  if (!id || isNaN(Number(id))) {
-    return NextResponse.json({ error: 'Invalid certificate ID' }, { status: 400 });
-  }
-
   try {
+    // Properly await and destructure params
+    const { id } = await params;
+
+    // Validate the ID
+    if (!id || isNaN(Number(id))) {
+      return NextResponse.json({ error: 'Invalid certificate ID' }, { status: 400 });
+    }
+
     // Get the certificate contract from deployedContracts
     const certificateContract = deployedContracts[arbitrumSepolia.id].Certificate;
     

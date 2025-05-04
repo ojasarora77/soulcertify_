@@ -41,7 +41,7 @@ const Home: NextPage = () => {
                   }}
                 >
                   <Image 
-                    src="/SoulCertify_logo.png" 
+                    src="/SoulCertify_logo_bg.png" 
                     alt="SoulCertify Logo" 
                     width={450} 
                     height={135} 
