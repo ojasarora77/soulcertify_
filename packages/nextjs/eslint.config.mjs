@@ -24,7 +24,7 @@ export default defineConfig([
       "prettier/prettier": [
         "warn",
         {
-          endOfLine: "auto",
+          endOfLine: "off",
         },
       ],
     },
