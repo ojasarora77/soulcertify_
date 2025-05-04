@@ -15,7 +15,8 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const id = params.id;
+  // Need to await params in modern Next.js
+  const id = await params.id;
 
   // Validate the ID
   if (!id || isNaN(Number(id))) {
