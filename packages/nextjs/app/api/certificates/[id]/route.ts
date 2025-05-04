@@ -1,44 +1,64 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createPublicClient, http } from 'viem';
-import { hardhat } from 'viem/chains';
+// app/api/certificates/[id]/route.ts
 
-// Configure client
+import { NextResponse } from 'next/server';
+import { createPublicClient, http } from 'viem';
+import { arbitrumSepolia } from 'viem/chains';
+import deployedContracts from '~~/contracts/deployedContracts';
+
+// Create a public client to interact with the blockchain
 const publicClient = createPublicClient({
-  chain: hardhat,
+  chain: arbitrumSepolia,
   transport: http(),
 });
 
 export async function GET(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
+  const id = params.id;
+
+  // Validate the ID
+  if (!id || isNaN(Number(id))) {
+    return NextResponse.json({ error: 'Invalid certificate ID' }, { status: 400 });
+  }
+
   try {
-    const id = params.id;
+    // Get the certificate contract from deployedContracts
+    const certificateContract = deployedContracts[arbitrumSepolia.id].Certificate;
     
-    // Call your contract to get certificate data
-    // This is a placeholder implementation
-    // In a real app, you would use contract calls here
-    
-    // For now, let's return mock data
-    const mockCertificate = {
+    if (!certificateContract || !certificateContract.address) {
+      return NextResponse.json({ error: 'Certificate contract not found' }, { status: 404 });
+    }
+
+    // Call the contract's getCertificate function
+    const certificateData = await publicClient.readContract({
+      address: certificateContract.address,
+      abi: certificateContract.abi,
+      functionName: 'getCertificate',
+      args: [BigInt(id)],
+    });
+
+    if (!certificateData) {
+      return NextResponse.json({ error: 'Certificate not found' }, { status: 404 });
+    }
+
+    // Format the certificate data
+    const certificate = {
       id: Number(id),
-      studentName: `Student ${id}`,
-      universityName: `University ${id}`,
-      yearOfGraduation: 2025,
-      degree: `Degree ${id}`,
-      major: `Major ${id}`,
-      skills: [`Skill ${id}-1`, `Skill ${id}-2`, `Skill ${id}-3`],
-      documentURI: `ipfs://QmMock${id}`,
-      isApproved: Number(id) % 2 === 0, // Even IDs are approved
-      isRevoked: Number(id) % 5 === 0, // Every 5th ID is revoked
+      studentName: certificateData[0],
+      universityName: certificateData[1],
+      yearOfGraduation: Number(certificateData[2]),
+      degree: certificateData[3],
+      major: certificateData[4],
+      skills: certificateData[5],
+      documentURI: certificateData[6],
+      isApproved: certificateData[7],
+      isRevoked: certificateData[8],
     };
 
-    return NextResponse.json(mockCertificate);
-  } catch (error) {
+    return NextResponse.json(certificate);
+  } catch (error: any) {
     console.error('Error fetching certificate:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch certificate' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message || 'Failed to fetch certificate' }, { status: 500 });
   }
 }
