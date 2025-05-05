@@ -10896,7 +10896,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.9.7":
+"framer-motion@npm:latest":
   version: 12.9.7
   resolution: "framer-motion@npm:12.9.7"
   dependencies:
@@ -15270,6 +15270,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ogl@npm:^1.0.11":
+  version: 1.0.11
+  resolution: "ogl@npm:1.0.11"
+  checksum: 00c596ea6755dfb1236f0b754c4434fff01873c0677230a24b6ffe9f31d5ca27ea3bc6363a140c827510327f7c2e823b0711f40cb52864182b58bea95806db4e
+  languageName: node
+  linkType: hard
+
 "on-exit-leak-free@npm:^0.2.0":
   version: 0.2.0
   resolution: "on-exit-leak-free@npm:0.2.0"
@@ -17141,9 +17148,10 @@ __metadata:
   resolution: "se-2@workspace:."
   dependencies:
     "@openzeppelin/contracts": ^4.9.5
-    framer-motion: ^12.9.7
+    framer-motion: latest
     husky: ~9.1.6
     lint-staged: ~13.2.2
+    ogl: ^1.0.11
     openai: 3.3.0
     process-env: ^2.0.2
     web3.storage: ^4.5.5

@@ -39,10 +39,10 @@ module.exports = {
           accent: "#FF6B2C", // Brighter orange
           "accent-content": "#FFF6F1",
           neutral: "#FFF6F1",
-          "neutral-content": "#110D2C",
-          "base-100": "#110D2C", // Dark blue
-          "base-200": "#1E1B3D", // Less dark blue
-          "base-300": "#2E2A5C", // Medium dark blue
+          "neutral-content": "#000000",
+          "base-100": "#000000", // Black
+          "base-200": "#000000", // Black
+          "base-300": "#111111", // Very dark gray
           "base-content": "#FFF6F1",
           info: "#1E1B3D",
           success: "#34EEB6",
