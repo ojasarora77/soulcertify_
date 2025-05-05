@@ -19,41 +19,41 @@ const Home: NextPage = () => {
             <div className="absolute right-0 top-1/3 w-80 h-80 bg-secondary/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
             <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '3.5s' }}></div>
           </div>
-          
+
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col items-center justify-center max-w-4xl mx-auto text-center">
               {/* Enhanced Animated Logo */}
-              <motion.div 
+              <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8 }}
                 className="mb-8 relative"
               >
                 <motion.div
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.05, 1],
                     rotate: [0, 1, 0, -1, 0]
                   }}
-                  transition={{ 
-                    repeat: Infinity, 
+                  transition={{
+                    repeat: Infinity,
                     duration: 6,
                     ease: "easeInOut"
                   }}
                 >
-                  <Image 
-                    src="/SoulCertify_logo_bg.png" 
-                    alt="SoulCertify Logo" 
-                    width={450} 
-                    height={135} 
+                  <Image
+                    src="/SoulCertify_logo_bg.png"
+                    alt="SoulCertify Logo"
+                    width={450}
+                    height={135}
                     priority
                     className="drop-shadow-xl"
                   />
                 </motion.div>
-                
+
                 {/* Glowing effect behind logo */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-24 bg-primary/20 rounded-full filter blur-xl -z-10"></div>
               </motion.div>
-              
+
               {/* Animated Description */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
@@ -61,10 +61,10 @@ const Home: NextPage = () => {
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 <h2 className="text-2xl md:text-3xl font-light mb-6 text-base-content/80">
-                  A decentralized platform for issuing, verifying, and managing educational certificates 
+                  A decentralized platform for issuing, verifying, and managing educational certificates
                   as Soulbound Tokens (SBTs) on the blockchain.
                 </h2>
-                
+
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
                   <Link href="/certificates" className="btn btn-primary btn-lg shadow-lg group">
                     <DocumentTextIcon className="h-6 w-6 mr-2 group-hover:animate-pulse" />
@@ -75,7 +75,7 @@ const Home: NextPage = () => {
                   </Link>
                 </div>
               </motion.div>
-              
+
               {/* Decorative Element */}
               <div className="mt-20 opacity-70">
                 <svg width="64" height="64" viewBox="0 0 24 24" className="mx-auto animate-bounce">
@@ -96,9 +96,9 @@ const Home: NextPage = () => {
                 Powerful tools to revolutionize educational credential management with blockchain technology
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              <motion.div 
+              <motion.div
                 whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="card bg-base-100 shadow-xl overflow-hidden border border-base-300"
@@ -112,13 +112,13 @@ const Home: NextPage = () => {
                   <p className="text-base-content/80">Non-transferable tokens that represent academic achievements and credentials, ensuring authenticity and preventing fraud.</p>
                 </div>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="card bg-base-100 shadow-xl overflow-hidden border border-base-300"
               >
-                <div className="h-2 bg-secondary"></div>
+                <div className="h-2 bg-primary"></div>
                 <div className="card-body items-center text-center">
                   <div className="bg-secondary/10 p-4 rounded-full mb-4">
                     <AcademicCapIcon className="h-12 w-12 text-secondary" />
@@ -127,8 +127,8 @@ const Home: NextPage = () => {
                   <p className="text-base-content/80">Issue verifiable degrees, certificates, and qualifications that can be easily verified by employers and institutions.</p>
                 </div>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="card bg-base-100 shadow-xl overflow-hidden border border-base-300"
@@ -158,7 +158,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="hidden md:block relative mb-16">
-              <div className="absolute left-0 right-0 top-1/2 h-1 bg-primary transform -translate-y-1/2"></div>
+              {/* Removed the orange line */}
               <div className="flex justify-between relative">
                 {[
                   { title: "Issue Certificate", desc: "Institution issues a certificate as an SBT" },
@@ -167,11 +167,7 @@ const Home: NextPage = () => {
                   { title: "Verification", desc: "Anyone can verify the certificate's authenticity" }
                 ].map((step, i) => (
                   <div key={i} className="flex flex-col items-center relative">
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 ${
-                      i === 0 ? 'bg-primary' : 
-                      i === 1 ? 'bg-secondary' : 
-                      i === 2 ? 'bg-accent' : 'bg-primary'
-                    }`}>
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 bg-primary`}>
                       {i + 1}
                     </div>
                     <div className="mt-6 text-center max-w-[200px]">
@@ -200,7 +196,7 @@ const Home: NextPage = () => {
                 ))}
               </ol>
             </div>
-            
+
             <div className="text-center mt-16">
               <Link href="/certificates" className="btn btn-primary btn-lg gap-2 group">
                 Get Started <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
