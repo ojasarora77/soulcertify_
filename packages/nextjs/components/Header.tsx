@@ -7,7 +7,6 @@ import { hardhat } from "viem/chains";
 import { Bars3Icon, BugAntIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
-import OrbLogo from "~~/components/OrbLogo";
 
 type HeaderMenuLink = {
   label: string;
@@ -73,7 +72,7 @@ export const Header = () => {
   );
 
   return (
-    <div className="sticky lg:static top-0 navbar bg-black min-h-0 flex-shrink-0 justify-between z-20 px-0 sm:px-2">
+    <div className="sticky lg:static top-0 navbar bg-black min-h-0 flex-shrink-0 justify-between z-20 px-0 sm:px-2 border-b border-white border-opacity-10">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
@@ -97,8 +96,8 @@ export const Header = () => {
             </ul>
           )}
         </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <OrbLogo width="50px" height="50px" />
+        <Link href="/" passHref className="hidden lg:flex items-center gap-4 ml-4 mr-6 shrink-0">
+          <div className="text-xl font-bold text-white">SoulCertify</div>
           <div className="flex flex-col">
             <span className="text-xs">Certificate SBT</span>
           </div>

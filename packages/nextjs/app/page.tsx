@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     <>
       {/* Hero Section with Black Background */}
       <div className="min-h-screen flex flex-col">
-        <div className="bg-black py-20 flex-grow relative overflow-hidden">
+        <div className="bg-black py-24 flex-grow relative overflow-hidden">
 
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col items-center justify-center max-w-4xl mx-auto text-center">
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8 }}
-                className="mb-8 relative"
+                className="mb-12 relative"
               >
                 <motion.div
                   animate={{
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
                   }}
                 >
                   <div className="flex justify-center items-center">
-                    <OrbLogo width="250px" height="250px" />
+                    <OrbLogo width="350px" height="350px" />
                   </div>
                 </motion.div>
               </motion.div>
@@ -69,6 +69,11 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Divider */}
+        <div className="w-full bg-black">
+          <div className="max-w-6xl mx-auto border-t border-white border-opacity-10"></div>
         </div>
 
         {/* Features Section */}
@@ -143,6 +148,11 @@ const Home: NextPage = () => {
           </div>
         </div>
 
+        {/* Divider */}
+        <div className="w-full bg-black">
+          <div className="max-w-6xl mx-auto border-t border-white border-opacity-10"></div>
+        </div>
+
         {/* How It Works Section */}
         <div className="py-20 px-4 bg-black">
           <div className="max-w-5xl mx-auto">
@@ -200,6 +210,11 @@ const Home: NextPage = () => {
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* Divider */}
+        <div className="w-full bg-black">
+          <div className="max-w-6xl mx-auto border-t border-white border-opacity-10"></div>
         </div>
       </div>
     </>
