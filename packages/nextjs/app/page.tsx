@@ -7,6 +7,7 @@ import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { AcademicCapIcon, ShieldCheckIcon, DocumentCheckIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import DecryptedText from "~~/components/DecryptedText";
+import SpotlightCard from "~~/components/SpotlightCard";
 
 const Home: NextPage = () => {
   return (
@@ -62,8 +63,16 @@ const Home: NextPage = () => {
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 <h2 className="text-2xl md:text-3xl font-light mb-6 text-base-content/80">
-                  A decentralized platform for issuing, verifying, and managing educational certificates
-                  as Soulbound Tokens (SBTs) on the blockchain.
+                  <DecryptedText
+                    text="A decentralized platform for issuing, verifying, and managing educational certificates as Soulbound Tokens (SBTs) on the blockchain."
+                    animateOn="view"
+                    sequential={true}
+                    speed={30}
+                    maxIterations={15}
+                    revealDirection="start"
+                    className="text-base-content/80"
+                    encryptedClassName="text-base-content/50"
+                  />
                 </h2>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
@@ -102,46 +111,58 @@ const Home: NextPage = () => {
               <motion.div
                 whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="card bg-base-100 shadow-xl overflow-hidden border border-base-300"
               >
-                <div className="h-2 bg-primary"></div>
-                <div className="card-body items-center text-center z-10">
-                  <div className="bg-primary/10 p-4 rounded-full mb-4">
-                    <ShieldCheckIcon className="h-12 w-12 text-primary" />
+                <SpotlightCard
+                  className="card bg-base-100 shadow-xl overflow-hidden border border-base-300 h-full"
+                  spotlightColor="rgba(255, 138, 80, 0.15)"
+                >
+                  <div className="h-2 bg-primary"></div>
+                  <div className="card-body items-center text-center z-10">
+                    <div className="bg-primary/10 p-4 rounded-full mb-4">
+                      <ShieldCheckIcon className="h-12 w-12 text-primary" />
+                    </div>
+                    <h3 className="card-title text-xl mb-2">Soulbound Tokens</h3>
+                    <p className="text-base-content/80">Non-transferable tokens that represent academic achievements and credentials, ensuring authenticity and preventing fraud.</p>
                   </div>
-                  <h3 className="card-title text-xl mb-2">Soulbound Tokens</h3>
-                  <p className="text-base-content/80">Non-transferable tokens that represent academic achievements and credentials, ensuring authenticity and preventing fraud.</p>
-                </div>
+                </SpotlightCard>
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="card bg-base-100 shadow-xl overflow-hidden border border-base-300"
               >
-                <div className="h-2 bg-primary"></div>
-                <div className="card-body items-center text-center">
-                  <div className="bg-secondary/10 p-4 rounded-full mb-4">
-                    <AcademicCapIcon className="h-12 w-12 text-secondary" />
+                <SpotlightCard
+                  className="card bg-base-100 shadow-xl overflow-hidden border border-base-300 h-full"
+                  spotlightColor="rgba(255, 208, 181, 0.15)"
+                >
+                  <div className="h-2 bg-primary"></div>
+                  <div className="card-body items-center text-center">
+                    <div className="bg-secondary/10 p-4 rounded-full mb-4">
+                      <AcademicCapIcon className="h-12 w-12 text-secondary" />
+                    </div>
+                    <h3 className="card-title text-xl mb-2">Academic Credentials</h3>
+                    <p className="text-base-content/80">Issue verifiable degrees, certificates, and qualifications that can be easily verified by employers and institutions.</p>
                   </div>
-                  <h3 className="card-title text-xl mb-2">Academic Credentials</h3>
-                  <p className="text-base-content/80">Issue verifiable degrees, certificates, and qualifications that can be easily verified by employers and institutions.</p>
-                </div>
+                </SpotlightCard>
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="card bg-base-100 shadow-xl overflow-hidden border border-base-300"
               >
-                <div className="h-2 bg-accent"></div>
-                <div className="card-body items-center text-center">
-                  <div className="bg-accent/10 p-4 rounded-full mb-4">
-                    <DocumentCheckIcon className="h-12 w-12 text-accent" />
+                <SpotlightCard
+                  className="card bg-base-100 shadow-xl overflow-hidden border border-base-300 h-full"
+                  spotlightColor="rgba(255, 107, 44, 0.15)"
+                >
+                  <div className="h-2 bg-accent"></div>
+                  <div className="card-body items-center text-center">
+                    <div className="bg-accent/10 p-4 rounded-full mb-4">
+                      <DocumentCheckIcon className="h-12 w-12 text-accent" />
+                    </div>
+                    <h3 className="card-title text-xl mb-2">Verification System</h3>
+                    <p className="text-base-content/80">Simple blockchain-based verification system that allows anyone to check the validity of certificates.</p>
                   </div>
-                  <h3 className="card-title text-xl mb-2">Verification System</h3>
-                  <p className="text-base-content/80">Simple blockchain-based verification system that allows anyone to check the validity of certificates.</p>
-                </div>
+                </SpotlightCard>
               </motion.div>
             </div>
           </div>
@@ -151,29 +172,10 @@ const Home: NextPage = () => {
         <div className="py-20 px-4 bg-base-100">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4">
-                <DecryptedText
-                  text="How It Works"
-                  animateOn="view"
-                  sequential={true}
-                  speed={80}
-                  maxIterations={15}
-                  revealDirection="center"
-                  className="text-primary"
-                  encryptedClassName="text-base-content"
-                />
-              </h2>
+              <h2 className="text-4xl font-bold mb-4">How It Works</h2>
               <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
               <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">
-                <DecryptedText
-                  text="A simple four-step process to secure and verify academic credentials"
-                  animateOn="view"
-                  sequential={true}
-                  speed={30}
-                  maxIterations={10}
-                  className="text-base-content/70"
-                  encryptedClassName="text-base-content/50"
-                />
+                A simple four-step process to secure and verify academic credentials
               </p>
             </div>
 
@@ -191,17 +193,7 @@ const Home: NextPage = () => {
                       {i + 1}
                     </div>
                     <div className="mt-6 text-center max-w-[200px]">
-                      <h3 className="font-bold text-lg mb-1">
-                        <DecryptedText
-                          text={step.title}
-                          animateOn="view"
-                          sequential={true}
-                          speed={50}
-                          maxIterations={10}
-                          className="text-primary"
-                          encryptedClassName="text-base-content"
-                        />
-                      </h3>
+                      <h3 className="font-bold text-lg mb-1">{step.title}</h3>
                       <p className="text-sm text-base-content/70">{step.desc}</p>
                     </div>
                   </div>
@@ -219,17 +211,7 @@ const Home: NextPage = () => {
                 ].map((step, i) => (
                   <li key={i} className="step step-primary">
                     <div className="mt-4">
-                      <p className="font-bold">
-                        <DecryptedText
-                          text={step.title}
-                          animateOn="view"
-                          sequential={true}
-                          speed={50}
-                          maxIterations={10}
-                          className="text-primary"
-                          encryptedClassName="text-base-content"
-                        />
-                      </p>
+                      <p className="font-bold">{step.title}</p>
                       <p className="text-sm">{step.desc}</p>
                     </div>
                   </li>
@@ -239,16 +221,7 @@ const Home: NextPage = () => {
 
             <div className="text-center mt-16">
               <Link href="/certificates" className="btn btn-primary btn-lg gap-2 group">
-                <DecryptedText
-                  text="Get Started"
-                  animateOn="hover"
-                  sequential={true}
-                  speed={40}
-                  maxIterations={10}
-                  className="text-white"
-                  encryptedClassName="text-white/80"
-                />
-                <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                Get Started <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
