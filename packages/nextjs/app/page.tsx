@@ -1,29 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import type { NextPage } from "next";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { AcademicCapIcon, ShieldCheckIcon, DocumentCheckIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import SpotlightCard from "~~/components/SpotlightCard";
+import OrbLogo from "~~/components/OrbLogo";
 
 const Home: NextPage = () => {
   return (
     <>
-      {/* Hero Section with Enhanced Gradient Background */}
+      {/* Hero Section with Black Background */}
       <div className="min-h-screen flex flex-col">
-        <div className="bg-gradient-to-br from-blue-500/20 via-indigo-400/10 to-purple-500/20 py-20 flex-grow relative overflow-hidden">
-          {/* Animated background elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -left-10 -top-10 w-72 h-72 bg-primary/10 rounded-full filter blur-3xl animate-pulse"></div>
-            <div className="absolute right-0 top-1/3 w-80 h-80 bg-secondary/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-            <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '3.5s' }}></div>
-          </div>
+        <div className="bg-black py-20 flex-grow relative overflow-hidden">
 
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col items-center justify-center max-w-4xl mx-auto text-center">
-              {/* Enhanced Animated Logo */}
+              {/* Orb Logo */}
               <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -33,7 +27,6 @@ const Home: NextPage = () => {
                 <motion.div
                   animate={{
                     scale: [1, 1.05, 1],
-                    rotate: [0, 1, 0, -1, 0]
                   }}
                   transition={{
                     repeat: Infinity,
@@ -41,18 +34,10 @@ const Home: NextPage = () => {
                     ease: "easeInOut"
                   }}
                 >
-                  <Image
-                    src="/SoulCertify_logo_bg.png"
-                    alt="SoulCertify Logo"
-                    width={450}
-                    height={135}
-                    priority
-                    className="drop-shadow-xl"
-                  />
+                  <div className="flex justify-center items-center">
+                    <OrbLogo width="250px" height="250px" />
+                  </div>
                 </motion.div>
-
-                {/* Glowing effect behind logo */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-24 bg-primary/20 rounded-full filter blur-xl -z-10"></div>
               </motion.div>
 
               {/* Animated Description */}
@@ -87,7 +72,7 @@ const Home: NextPage = () => {
         </div>
 
         {/* Features Section */}
-        <div id="features" className="bg-base-200 w-full px-4 py-20">
+        <div id="features" className="bg-black w-full px-4 py-20">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">Features</h2>
@@ -159,7 +144,7 @@ const Home: NextPage = () => {
         </div>
 
         {/* How It Works Section */}
-        <div className="py-20 px-4 bg-base-100">
+        <div className="py-20 px-4 bg-black">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">How It Works</h2>
