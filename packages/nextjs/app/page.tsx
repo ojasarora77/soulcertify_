@@ -6,6 +6,7 @@ import type { NextPage } from "next";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { AcademicCapIcon, ShieldCheckIcon, DocumentCheckIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
+import DecryptedText from "~~/components/DecryptedText";
 
 const Home: NextPage = () => {
   return (
@@ -150,10 +151,29 @@ const Home: NextPage = () => {
         <div className="py-20 px-4 bg-base-100">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4">How It Works</h2>
+              <h2 className="text-4xl font-bold mb-4">
+                <DecryptedText
+                  text="How It Works"
+                  animateOn="view"
+                  sequential={true}
+                  speed={80}
+                  maxIterations={15}
+                  revealDirection="center"
+                  className="text-primary"
+                  encryptedClassName="text-base-content"
+                />
+              </h2>
               <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
               <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">
-                A simple four-step process to secure and verify academic credentials
+                <DecryptedText
+                  text="A simple four-step process to secure and verify academic credentials"
+                  animateOn="view"
+                  sequential={true}
+                  speed={30}
+                  maxIterations={10}
+                  className="text-base-content/70"
+                  encryptedClassName="text-base-content/50"
+                />
               </p>
             </div>
 
@@ -171,7 +191,17 @@ const Home: NextPage = () => {
                       {i + 1}
                     </div>
                     <div className="mt-6 text-center max-w-[200px]">
-                      <h3 className="font-bold text-lg mb-1">{step.title}</h3>
+                      <h3 className="font-bold text-lg mb-1">
+                        <DecryptedText
+                          text={step.title}
+                          animateOn="view"
+                          sequential={true}
+                          speed={50}
+                          maxIterations={10}
+                          className="text-primary"
+                          encryptedClassName="text-base-content"
+                        />
+                      </h3>
                       <p className="text-sm text-base-content/70">{step.desc}</p>
                     </div>
                   </div>
@@ -189,7 +219,17 @@ const Home: NextPage = () => {
                 ].map((step, i) => (
                   <li key={i} className="step step-primary">
                     <div className="mt-4">
-                      <p className="font-bold">{step.title}</p>
+                      <p className="font-bold">
+                        <DecryptedText
+                          text={step.title}
+                          animateOn="view"
+                          sequential={true}
+                          speed={50}
+                          maxIterations={10}
+                          className="text-primary"
+                          encryptedClassName="text-base-content"
+                        />
+                      </p>
                       <p className="text-sm">{step.desc}</p>
                     </div>
                   </li>
@@ -199,7 +239,16 @@ const Home: NextPage = () => {
 
             <div className="text-center mt-16">
               <Link href="/certificates" className="btn btn-primary btn-lg gap-2 group">
-                Get Started <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <DecryptedText
+                  text="Get Started"
+                  animateOn="hover"
+                  sequential={true}
+                  speed={40}
+                  maxIterations={10}
+                  className="text-white"
+                  encryptedClassName="text-white/80"
+                />
+                <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
