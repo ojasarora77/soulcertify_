@@ -6,7 +6,6 @@ import type { NextPage } from "next";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { AcademicCapIcon, ShieldCheckIcon, DocumentCheckIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
-import DecryptedText from "~~/components/DecryptedText";
 import SpotlightCard from "~~/components/SpotlightCard";
 
 const Home: NextPage = () => {
@@ -63,16 +62,7 @@ const Home: NextPage = () => {
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 <h2 className="text-2xl md:text-3xl font-light mb-6 text-base-content/80">
-                  <DecryptedText
-                    text="A decentralized platform for issuing, verifying, and managing educational certificates as Soulbound Tokens (SBTs) on the blockchain."
-                    animateOn="view"
-                    sequential={true}
-                    speed={30}
-                    maxIterations={15}
-                    revealDirection="start"
-                    className="text-base-content/80"
-                    encryptedClassName="text-base-content/50"
-                  />
+                  A decentralized platform for issuing, verifying, and managing educational certificates as Soulbound Tokens (SBTs) on the blockchain.
                 </h2>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
