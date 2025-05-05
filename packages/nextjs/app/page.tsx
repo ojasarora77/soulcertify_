@@ -93,8 +93,8 @@ const Home: NextPage = () => {
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <SpotlightCard
-                  className="card bg-base-100 shadow-xl overflow-hidden border border-base-300 h-full"
-                  spotlightColor="rgba(255, 138, 80, 0.15)"
+                  className="card shadow-xl overflow-hidden h-full"
+                  spotlightColor="rgba(255, 138, 80, 0.08)"
                 >
                   <div className="h-2 bg-primary"></div>
                   <div className="card-body items-center text-center z-10">
@@ -112,8 +112,8 @@ const Home: NextPage = () => {
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <SpotlightCard
-                  className="card bg-base-100 shadow-xl overflow-hidden border border-base-300 h-full"
-                  spotlightColor="rgba(255, 208, 181, 0.15)"
+                  className="card shadow-xl overflow-hidden h-full"
+                  spotlightColor="rgba(255, 208, 181, 0.08)"
                 >
                   <div className="h-2 bg-primary"></div>
                   <div className="card-body items-center text-center">
@@ -131,8 +131,8 @@ const Home: NextPage = () => {
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <SpotlightCard
-                  className="card bg-base-100 shadow-xl overflow-hidden border border-base-300 h-full"
-                  spotlightColor="rgba(255, 107, 44, 0.15)"
+                  className="card shadow-xl overflow-hidden h-full"
+                  spotlightColor="rgba(255, 107, 44, 0.08)"
                 >
                   <div className="h-2 bg-accent"></div>
                   <div className="card-body items-center text-center">
