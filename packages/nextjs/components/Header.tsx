@@ -44,8 +44,10 @@ export const HeaderMenuLinks = () => {
               href={href}
               passHref
               className={`${
-                isActive ? "bg-secondary shadow-md" : ""
-              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+                isActive
+                  ? "bg-[#9C43FE] shadow-md border-transparent"
+                  : "border border-white border-opacity-70"
+              } text-white hover:!text-white hover:shadow-md focus:!bg-[#9C43FE] active:!bg-[#9C43FE] active:!text-white py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
             >
               {icon}
               <span>{label}</span>
@@ -96,11 +98,11 @@ export const Header = () => {
             </ul>
           )}
         </div>
+        <Link href="/" passHref className="lg:hidden flex items-center gap-2 ml-2 shrink-0">
+          <div className="text-lg font-bold text-white">SoulCertify</div>
+        </Link>
         <Link href="/" passHref className="hidden lg:flex items-center gap-4 ml-4 mr-6 shrink-0">
           <div className="text-xl font-bold text-white">SoulCertify</div>
-          <div className="flex flex-col">
-            <span className="text-xs">Certificate SBT</span>
-          </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
           <HeaderMenuLinks />

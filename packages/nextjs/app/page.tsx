@@ -51,7 +51,7 @@ const Home: NextPage = () => {
                 </h2>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-                  <Link href="/certificates" className="btn btn-primary btn-lg shadow-lg group">
+                  <Link href="/certificates" className="btn bg-[#9C43FE] hover:bg-[#8A3AE0] text-white btn-lg shadow-lg group">
                     <DocumentTextIcon className="h-6 w-6 mr-2 group-hover:animate-pulse" />
                     Manage Certificates
                   </Link>
@@ -99,7 +99,7 @@ const Home: NextPage = () => {
                   <div className="h-2 bg-primary"></div>
                   <div className="card-body items-center text-center z-10">
                     <div className="bg-primary/10 p-4 rounded-full mb-4">
-                      <ShieldCheckIcon className="h-12 w-12 text-primary" />
+                      <ShieldCheckIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Soulbound Tokens</h3>
                     <p className="text-base-content/80">Non-transferable tokens that represent academic achievements and credentials, ensuring authenticity and preventing fraud.</p>
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
                   <div className="h-2 bg-primary"></div>
                   <div className="card-body items-center text-center">
                     <div className="bg-secondary/10 p-4 rounded-full mb-4">
-                      <AcademicCapIcon className="h-12 w-12 text-secondary" />
+                      <AcademicCapIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Academic Credentials</h3>
                     <p className="text-base-content/80">Issue verifiable degrees, certificates, and qualifications that can be easily verified by employers and institutions.</p>
@@ -137,7 +137,7 @@ const Home: NextPage = () => {
                   <div className="h-2 bg-accent"></div>
                   <div className="card-body items-center text-center">
                     <div className="bg-accent/10 p-4 rounded-full mb-4">
-                      <DocumentCheckIcon className="h-12 w-12 text-accent" />
+                      <DocumentCheckIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Verification System</h3>
                     <p className="text-base-content/80">Simple blockchain-based verification system that allows anyone to check the validity of certificates.</p>
@@ -205,7 +205,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="text-center mt-16">
-              <Link href="/certificates" className="btn btn-primary btn-lg gap-2 group">
+              <Link href="/certificates" className="btn bg-[#9C43FE] hover:bg-[#8A3AE0] text-white btn-lg gap-2 group">
                 Get Started <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
