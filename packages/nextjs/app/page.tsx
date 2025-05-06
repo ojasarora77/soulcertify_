@@ -7,6 +7,7 @@ import { AcademicCapIcon, ShieldCheckIcon, DocumentCheckIcon, ArrowRightIcon } f
 import { motion } from "framer-motion";
 import SpotlightCard from "~~/components/SpotlightCard";
 import OrbLogo from "~~/components/OrbLogo";
+import HorizontalOrbEffect from "~~/components/HorizontalOrbEffect";
 
 const Home: NextPage = () => {
   return (
@@ -81,7 +82,9 @@ const Home: NextPage = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">Features</h2>
-              <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+              <div className="w-20 h-1 mx-auto">
+                <HorizontalOrbEffect height="2px" hue={20} />
+              </div>
               <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">
                 Powerful tools to revolutionize educational credential management with blockchain technology
               </p>
@@ -94,11 +97,11 @@ const Home: NextPage = () => {
               >
                 <SpotlightCard
                   className="card shadow-xl overflow-hidden h-full"
-                  spotlightColor="rgba(255, 138, 80, 0.08)"
+                  spotlightColor="rgba(156, 67, 254, 0.08)"
                 >
-                  <div className="h-2 bg-primary"></div>
+                  <div className="h-2 bg-[#9C43FE]"></div>
                   <div className="card-body items-center text-center z-10">
-                    <div className="bg-primary/10 p-4 rounded-full mb-4">
+                    <div className="bg-[#9C43FE]/10 p-4 rounded-full mb-4">
                       <ShieldCheckIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Soulbound Tokens</h3>
@@ -113,11 +116,11 @@ const Home: NextPage = () => {
               >
                 <SpotlightCard
                   className="card shadow-xl overflow-hidden h-full"
-                  spotlightColor="rgba(255, 208, 181, 0.08)"
+                  spotlightColor="rgba(185, 128, 255, 0.08)"
                 >
-                  <div className="h-2 bg-primary"></div>
+                  <div className="h-2 bg-[#9C43FE]"></div>
                   <div className="card-body items-center text-center">
-                    <div className="bg-secondary/10 p-4 rounded-full mb-4">
+                    <div className="bg-[#9C43FE]/10 p-4 rounded-full mb-4">
                       <AcademicCapIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Academic Credentials</h3>
@@ -132,11 +135,11 @@ const Home: NextPage = () => {
               >
                 <SpotlightCard
                   className="card shadow-xl overflow-hidden h-full"
-                  spotlightColor="rgba(255, 107, 44, 0.08)"
+                  spotlightColor="rgba(138, 58, 224, 0.08)"
                 >
-                  <div className="h-2 bg-accent"></div>
+                  <div className="h-2 bg-[#9C43FE]"></div>
                   <div className="card-body items-center text-center">
-                    <div className="bg-accent/10 p-4 rounded-full mb-4">
+                    <div className="bg-[#9C43FE]/10 p-4 rounded-full mb-4">
                       <DocumentCheckIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Verification System</h3>
@@ -158,7 +161,9 @@ const Home: NextPage = () => {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">How It Works</h2>
-              <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+              <div className="w-20 h-1 mx-auto">
+                <HorizontalOrbEffect height="2px" hue={20} />
+              </div>
               <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">
                 A simple four-step process to secure and verify academic credentials
               </p>

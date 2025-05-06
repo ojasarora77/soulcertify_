@@ -40,14 +40,14 @@ export default function HorizontalOrbEffect({
       float q = dot(c, vec3(0.211, -0.523, 0.312));
       return vec3(y, i, q);
     }
-    
+
     vec3 yiq2rgb(vec3 c) {
       float r = c.x + 0.956 * c.y + 0.621 * c.z;
       float g = c.x - 0.272 * c.y - 0.647 * c.z;
       float b = c.x - 1.106 * c.y + 1.703 * c.z;
       return vec3(r, g, b);
     }
-    
+
     vec3 adjustHue(vec3 color, float hueDeg) {
       float hueRad = hueDeg * 3.14159265 / 180.0;
       vec3 yiq = rgb2yiq(color);
@@ -59,7 +59,7 @@ export default function HorizontalOrbEffect({
       yiq.z = q;
       return yiq2rgb(yiq);
     }
-    
+
     vec3 hash33(vec3 p3) {
       p3 = fract(p3 * vec3(0.1031, 0.11369, 0.13787));
       p3 += dot(p3, p3.yxz + 19.19);
@@ -69,7 +69,7 @@ export default function HorizontalOrbEffect({
         p3.y + p3.z
       ) * p3.zyx);
     }
-    
+
     float snoise3(vec3 p) {
       const float K1 = 0.333333333;
       const float K2 = 0.166666667;
@@ -95,48 +95,48 @@ export default function HorizontalOrbEffect({
       );
       return dot(vec4(31.316), n);
     }
-    
+
     vec4 extractAlpha(vec3 colorIn) {
       float a = max(max(colorIn.r, colorIn.g), colorIn.b);
       return vec4(colorIn.rgb / (a + 1e-5), a);
     }
-    
+
     const vec3 baseColor1 = vec3(0.611765, 0.262745, 0.996078);
     const vec3 baseColor2 = vec3(0.298039, 0.760784, 0.913725);
     const vec3 baseColor3 = vec3(0.062745, 0.078431, 0.600000);
-    
+
     vec4 mainImage(vec2 fragCoord) {
       vec2 uv = fragCoord / iResolution.xy;
-      
+
       // Horizontal effect - stretch the x coordinate
       float aspectRatio = iResolution.x / iResolution.y;
       uv.y = (uv.y - 0.5) * 5.0 + 0.5; // Stretch vertically to focus on center
-      
+
       // Time-based animation
       float time = iTime * 0.5;
-      
+
       // Generate noise
       float noise = snoise3(vec3(uv.x * 3.0, uv.y * 10.0, time)) * 0.5 + 0.5;
-      
+
       // Color mixing based on position and noise
       float mixFactor = sin(uv.x * 10.0 + time) * 0.5 + 0.5;
       vec3 color1 = adjustHue(baseColor1, hue);
       vec3 color2 = adjustHue(baseColor2, hue);
       vec3 color3 = adjustHue(baseColor3, hue);
-      
+
       vec3 color = mix(color1, color2, mixFactor);
       color = mix(color, color3, noise * 0.5);
-      
+
       // Add glow and fade at edges
       float edgeFade = smoothstep(0.0, 0.2, uv.y) * smoothstep(1.0, 0.8, uv.y);
       float horizontalFade = sin(uv.x * 3.14159) * hover;
-      
+
       color *= edgeFade * (0.7 + horizontalFade * 0.3);
-      
+
       // Extract alpha for proper blending
       return extractAlpha(color);
     }
-    
+
     void main() {
       vec4 col = mainImage(vUv * iResolution.xy);
       gl_FragColor = vec4(col.rgb * col.a, col.a);
@@ -191,14 +191,14 @@ export default function HorizontalOrbEffect({
 
     let lastTime = 0;
     let rafId: number;
-    
+
     const update = (t: number) => {
       rafId = requestAnimationFrame(update);
       lastTime = t;
       program.uniforms.iTime.value = t * 0.001;
       renderer.render({ scene: mesh });
     };
-    
+
     rafId = requestAnimationFrame(update);
 
     return () => {
