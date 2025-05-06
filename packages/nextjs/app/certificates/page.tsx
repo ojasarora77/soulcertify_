@@ -7,6 +7,8 @@ import { IssueCertificateForm } from "./_components/IssueCertificateForm";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import VeniceCertificateAssistant from "./_components/VeniceService"; // Import Venice AI component
+import { DocumentTextIcon } from "@heroicons/react/24/outline"; // Import DocumentTextIcon
+import Link from "next/link";
 
 const CertificatesPage = () => {
   const { address: connectedAddress, isConnected } = useAccount();
@@ -84,6 +86,14 @@ const CertificatesPage = () => {
           </a>
         )}
       </div>
+
+      {/* Add link to admin page */}
+      {isAdmin && (
+        <Link href="/admin/certificate-requests" className="btn btn-sm btn-outline gap-1 ml-2">
+          <DocumentTextIcon className="h-4 w-4" />
+          Certificate Requests
+        </Link>
+      )}
 
       {/* Tab content */}
       {activeTab === "issue" && isAdmin ? (

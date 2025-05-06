@@ -6,7 +6,8 @@ import {
   ArrowPathIcon,
   DocumentTextIcon,
   AcademicCapIcon,
-  SparklesIcon
+  SparklesIcon,
+  CheckCircleIcon
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { Address } from "~~/components/scaffold-eth";
@@ -17,6 +18,7 @@ import {
   analyzeCertificateRequest,
   generateSkillRecommendations
 } from '../../AI/veniceService';
+import { uploadToPinata } from "~~/services/ipfsService";
 
 // Define proper types for messages and conversation
 interface Message {
@@ -37,6 +39,7 @@ interface CertificateInfo {
   major: string;
   skills: string[];
   studentAddress?: string;
+  documentURI?: string; // Add this for document uploads
   [key: string]: any; // Allow for additional properties
 }
 
@@ -69,6 +72,12 @@ const VeniceCertificateAssistant = () => {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const { address } = useAccount();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Add these new state variables
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState("");
   
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -254,12 +263,79 @@ const VeniceCertificateAssistant = () => {
     }
   };
   
+  // Add this new function for file selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadError("");
+    
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      
+      // Check file size (limit to 10MB)
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        setUploadError("File is too large. Maximum size is 10MB.");
+        return;
+      }
+      
+      // Check file type
+      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        setUploadError("Invalid file type. Only PDF, JPG, and PNG are allowed.");
+        return;
+      }
+      
+      setFile(selectedFile);
+    }
+  };
+  
+  // Add this function to upload files to IPFS
+  const uploadToIPFS = async (): Promise<string> => {
+    if (!file) return "";
+    
+    try {
+      setUploading(true);
+      
+      // Create a simulated progress indicator
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += 10;
+        if (progress >= 90) {
+          clearInterval(progressInterval);
+        }
+        setUploadProgress(progress);
+      }, 500);
+      
+      // Upload to IPFS using Pinata service
+      const ipfsUri = await uploadToPinata(file);
+      
+      // Complete the progress
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+      
+      return ipfsUri;
+    } catch (error) {
+      console.error("Error uploading to IPFS:", error);
+      setUploadError("Failed to upload document. Please try again.");
+      throw error;
+    } finally {
+      setUploading(false);
+    }
+  };
+  
+  // Modify the handle submit function to include document upload
   const handleSubmitCertificateRequest = async () => {
     if (!certificateInfo) return;
     
     setIsSubmitting(true);
     try {
-      // Submit certificate request to API
+      // Upload document to IPFS if one is selected
+      let documentURI = "";
+      if (file) {
+        notification.info("Uploading certificate document to IPFS...");
+        documentURI = await uploadToIPFS();
+        notification.success("Certificate document uploaded successfully!");
+      }
+      
+      // Submit certificate request to our API endpoint
       const response = await fetch('/api/certificate-requests', {
         method: 'POST',
         headers: {
@@ -267,24 +343,30 @@ const VeniceCertificateAssistant = () => {
         },
         body: JSON.stringify({
           ...certificateInfo,
-          aiGenerated: true
+          documentURI, // Add the document URI if available
+          aiGenerated: true,
+          timestamp: new Date().toISOString(),
+          status: 'pending',
         }),
       });
       
       if (!response.ok) {
-        throw new Error('Failed to submit certificate request');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit certificate request');
       }
       
+      const result = await response.json();
+      
       // Handle success
-      notification.success("Certificate request submitted successfully!");
+      notification.success("Certificate request submitted to admin successfully!");
       setMessages(prev => [...prev, {
         sender: "assistant",
-        text: "Great news! Your certificate request has been submitted to the administrator. You'll receive a notification when your certificate is ready for approval. Is there anything else I can help you with?"
+        text: `Great news! Your certificate request has been submitted to the administrator with request ID: ${result.requestId}. You'll receive a notification when your certificate is ready for approval. Is there anything else I can help you with?`
       }]);
       
       setConversation(prev => [...prev, {
         role: "assistant",
-        content: "Great news! Your certificate request has been submitted to the administrator. You'll receive a notification when your certificate is ready for approval. Is there anything else I can help you with?"
+        content: `Great news! Your certificate request has been submitted to the administrator with request ID: ${result.requestId}. You'll receive a notification when your certificate is ready for approval. Is there anything else I can help you with?`
       }]);
       
       // Reset certificate info
@@ -404,51 +486,125 @@ const VeniceCertificateAssistant = () => {
           </motion.div>
         ))}
         
-        {isTyping && (
-          <div className="flex justify-start mb-4">
-            <div className="bg-base-200 text-base-content p-3 rounded-2xl rounded-tl-none max-w-[80%]">
-              <div className="flex items-center gap-1">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: "0.2s" }}></div>
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: "0.4s" }}></div>
-              </div>
-            </div>
+            {isTyping && (
+      <div className="flex justify-start mb-4">
+        <div className="bg-base-200 text-base-content p-3 rounded-2xl rounded-tl-none max-w-[80%]">
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: "0.2s" }}></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: "0.4s" }}></div>
           </div>
-        )}
+        </div>
+      </div>
+    )}
+
         
         <div ref={messagesEndRef} />
       </div>
       
       {/* Certificate Info Display (when available) */}
       {certificateInfo && (
-        <div className="p-4 border-t border-base-300 bg-base-200">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-semibold text-sm">Certificate Information</h3>
-            <button 
-              className="btn btn-xs btn-ghost"
-              onClick={() => {
-                setCertificateInfo(null);
-                setAnalysisResult(null);
-              }}
-            >
-              Edit
-            </button>
+  <div className="p-4 border-t border-base-300 bg-base-200">
+    <div className="flex justify-between items-center mb-2">
+      <h3 className="font-semibold text-sm">Certificate Information</h3>
+      <button 
+        className="btn btn-xs btn-ghost"
+        onClick={() => {
+          setCertificateInfo(null);
+          setAnalysisResult(null);
+          setFile(null);
+          setUploadProgress(0);
+        }}
+      >
+        Edit
+      </button>
+    </div>
+    <div className="grid grid-cols-2 gap-2 text-xs">
+      <div><span className="opacity-70">Name:</span> {certificateInfo.studentName}</div>
+      <div><span className="opacity-70">Year:</span> {certificateInfo.yearOfGraduation}</div>
+      <div><span className="opacity-70">University:</span> {certificateInfo.universityName}</div>
+      <div><span className="opacity-70">Degree:</span> {certificateInfo.degree}</div>
+      <div className="col-span-2"><span className="opacity-70">Major:</span> {certificateInfo.major}</div>
+      <div className="col-span-2">
+        <span className="opacity-70">Skills:</span> {Array.isArray(certificateInfo.skills) 
+          ? certificateInfo.skills.join(', ') 
+          : certificateInfo.skills}
+      </div>
+
+      {!file && !uploading && !certificateInfo.documentURI && (
+        <div className="col-span-2 mt-2">
+          <div className="flex items-center gap-2">
+            <span className="opacity-70">Document:</span>
+            <label className="btn btn-xs btn-outline relative overflow-hidden">
+              Upload Certificate
+              <input
+                type="file"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                accept=".pdf,.jpg,.jpeg,.png"
+                onChange={handleFileChange}
+              />
+            </label>
           </div>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div><span className="opacity-70">Name:</span> {certificateInfo.studentName}</div>
-            <div><span className="opacity-70">Year:</span> {certificateInfo.yearOfGraduation}</div>
-            <div><span className="opacity-70">University:</span> {certificateInfo.universityName}</div>
-            <div><span className="opacity-70">Degree:</span> {certificateInfo.degree}</div>
-            <div className="col-span-2"><span className="opacity-70">Major:</span> {certificateInfo.major}</div>
-            <div className="col-span-2">
-              <span className="opacity-70">Skills:</span> {Array.isArray(certificateInfo.skills) 
-                ? certificateInfo.skills.join(', ') 
-                : certificateInfo.skills}
-            </div>
+          {uploadError && (
+            <p className="text-error text-xs mt-1">{uploadError}</p>
+          )}
+        </div>
+      )}
+
+      {file && !uploading && (
+        <div className="col-span-2 mt-2">
+          <div className="flex items-center gap-2">
+            <span className="opacity-70">Document:</span>
+            <span className="text-success flex items-center gap-1">
+              <CheckCircleIcon className="h-3 w-3" />
+              {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+            </span>
+            <button 
+              className="btn btn-xs btn-ghost" 
+              onClick={() => setFile(null)}
+            >
+              Remove
+            </button>
           </div>
         </div>
       )}
-      
+
+      {uploading && (
+        <div className="col-span-2 mt-2">
+          <div className="flex justify-between items-center mb-1">
+            <span className="opacity-70">Uploading:</span>
+            <span className="text-xs font-mono">{uploadProgress}%</span>
+          </div>
+          <div className="w-full bg-base-300 rounded-full h-1.5">
+            <div 
+              className="bg-primary h-1.5 rounded-full transition-all duration-300" 
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+
+          {certificateInfo.documentURI && (
+            <div className="col-span-2 mt-2">
+              <div className="flex items-center gap-2">
+                <span className="opacity-70">Document:</span>
+                <a
+                  href={certificateInfo.documentURI.startsWith("ipfs://") 
+                    ? `https://ipfs.io/ipfs/${certificateInfo.documentURI.replace("ipfs://", "")}` 
+                    : certificateInfo.documentURI}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary text-xs underline"
+                >
+                  View Certificate Document
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+
       {/* Input Area */}
       <div className="p-4 border-t border-base-300">
         <div className="flex items-center">
