@@ -37,35 +37,33 @@ const writeRequests = (requests: any[]) => {
   console.log(`Data saved to: ${REQUESTS_FILE_PATH}`);
 };
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: NextRequest) {
   try {
-    const { id } = params;
-    
-    // Get all requests
+    const url = request.nextUrl;
+    const segments = url.pathname.split('/');
+    const id = segments[segments.indexOf('certificate-requests') + 1];
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing ID in URL' }, { status: 400 });
+    }
+
     const requests = readRequests();
-    
-    // Find the request to update
-    const requestIndex = requests.findIndex((req: { id: string; }) => req.id === id);
-    
+
+    const requestIndex = requests.findIndex((req: { id: string }) => req.id === id);
     if (requestIndex === -1) {
       return NextResponse.json({ error: 'Request not found' }, { status: 404 });
     }
-    
-    // Update the request status
+
     requests[requestIndex].status = 'rejected';
     requests[requestIndex].rejectedAt = new Date().toISOString();
-    
-    // Save the updated requests
+
     writeRequests(requests);
-    
+
     return NextResponse.json({
       success: true,
       message: 'Certificate request rejected successfully',
     });
-    
+
   } catch (error: any) {
     console.error('Error rejecting certificate request:', error);
     return NextResponse.json({ 
@@ -73,3 +71,4 @@ export async function POST(
     }, { status: 500 });
   }
 }
+
