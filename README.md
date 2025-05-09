@@ -42,25 +42,13 @@ Before you begin, you need to install the following tools:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/soulcertify.git
+   git clone https://github.com/ojasarora77/soulcertify.git
    cd soulcertify
    ```
 
 2. Install dependencies:
    ```bash
    yarn install
-   ```
-
-### Running the Application
-
-1. Start a local Ethereum network:
-   ```bash
-   yarn chain
-   ```
-
-2. Deploy the smart contracts:
-   ```bash
-   yarn deploy
    ```
 
 3. Start the frontend application:
@@ -119,43 +107,13 @@ The main smart contract that handles the issuance and management of educational 
 3. **Blockchain Storage**: The approved certificate is stored permanently on the blockchain.
 4. **Verification**: Employers or other institutions can verify the certificate's authenticity.
 
-## 🧪 Testing
-
-Run the smart contract tests:
-
-```bash
-yarn test
-```
 
 ## 🌐 Deployment
 
-### Local Development
-
-For local development, follow the "Running the Application" steps above.
-
 ### Production Deployment
 
+
 #### Smart Contracts
-
-To deploy to a live network (e.g., Arbitrum Sepolia):
-
-```bash
-yarn deploy --network arbitrumSepolia
-```
-
-#### Frontend
-
-Deploy the frontend to Vercel:
-
-```bash
-yarn vercel
-```
-
-Or build for IPFS:
-
-```bash
-yarn ipfs
-```
 
 ## 🔐 Security Considerations
 
