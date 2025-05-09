@@ -45,9 +45,9 @@ export const HeaderMenuLinks = () => {
               passHref
               className={`${
                 isActive
-                  ? "bg-[#9C43FE] shadow-md border-transparent"
+                  ? "bg-[#FF8A50] shadow-md border-transparent"
                   : "border border-white border-opacity-70"
-              } text-white hover:!text-white hover:shadow-md focus:!bg-[#9C43FE] active:!bg-[#9C43FE] active:!text-white py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+              } text-white hover:!text-white hover:shadow-md focus:!bg-[#FF8A50] active:!bg-[#FF8A50] active:!text-white py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
             >
               {icon}
               <span>{label}</span>

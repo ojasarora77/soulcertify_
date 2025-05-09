@@ -52,7 +52,7 @@ const Home: NextPage = () => {
                 </h2>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-                  <Link href="/certificates" className="btn bg-[#9C43FE] hover:bg-[#8A3AE0] text-white btn-lg shadow-lg group">
+                  <Link href="/certificates" className="btn bg-[#FF8A50] hover:bg-[#FF6B2C] text-white btn-lg shadow-lg group">
                     <DocumentTextIcon className="h-6 w-6 mr-2 group-hover:animate-pulse" />
                     Manage Certificates
                   </Link>
@@ -97,11 +97,11 @@ const Home: NextPage = () => {
               >
                 <SpotlightCard
                   className="card shadow-xl overflow-hidden h-full"
-                  spotlightColor="rgba(156, 67, 254, 0.08)"
+                  spotlightColor="rgba(255, 138, 80, 0.08)"
                 >
-                  <div className="h-2 bg-[#9C43FE]"></div>
+                  <div className="h-2 bg-[#FF8A50]"></div>
                   <div className="card-body items-center text-center z-10">
-                    <div className="bg-[#9C43FE]/10 p-4 rounded-full mb-4">
+                    <div className="bg-[#FF8A50]/10 p-4 rounded-full mb-4">
                       <ShieldCheckIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Soulbound Tokens</h3>
@@ -116,11 +116,11 @@ const Home: NextPage = () => {
               >
                 <SpotlightCard
                   className="card shadow-xl overflow-hidden h-full"
-                  spotlightColor="rgba(185, 128, 255, 0.08)"
+                  spotlightColor="rgba(255, 208, 181, 0.08)"
                 >
-                  <div className="h-2 bg-[#9C43FE]"></div>
+                  <div className="h-2 bg-[#FF8A50]"></div>
                   <div className="card-body items-center text-center">
-                    <div className="bg-[#9C43FE]/10 p-4 rounded-full mb-4">
+                    <div className="bg-[#FF8A50]/10 p-4 rounded-full mb-4">
                       <AcademicCapIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Academic Credentials</h3>
@@ -135,11 +135,11 @@ const Home: NextPage = () => {
               >
                 <SpotlightCard
                   className="card shadow-xl overflow-hidden h-full"
-                  spotlightColor="rgba(138, 58, 224, 0.08)"
+                  spotlightColor="rgba(255, 107, 44, 0.08)"
                 >
-                  <div className="h-2 bg-[#9C43FE]"></div>
+                  <div className="h-2 bg-[#FF8A50]"></div>
                   <div className="card-body items-center text-center">
-                    <div className="bg-[#9C43FE]/10 p-4 rounded-full mb-4">
+                    <div className="bg-[#FF8A50]/10 p-4 rounded-full mb-4">
                       <DocumentCheckIcon className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="card-title text-xl mb-2">Verification System</h3>
@@ -210,7 +210,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="text-center mt-16">
-              <Link href="/certificates" className="btn bg-[#9C43FE] hover:bg-[#8A3AE0] text-white btn-lg gap-2 group">
+              <Link href="/certificates" className="btn bg-[#FF8A50] hover:bg-[#FF6B2C] text-white btn-lg gap-2 group">
                 Get Started <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

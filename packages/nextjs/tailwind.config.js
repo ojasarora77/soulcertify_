@@ -8,19 +8,19 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#9C43FE",  // Purple
+          primary: "#FF8A50",  // Light orange
           "primary-content": "#110D2C",
-          secondary: "#B980FF", // Lighter purple
+          secondary: "#FFD0B5", // Lighter orange
           "secondary-content": "#110D2C",
-          accent: "#8A3AE0", // Darker purple
+          accent: "#FF6B2C", // Brighter orange
           "accent-content": "#110D2C",
           neutral: "#110D2C",
           "neutral-content": "#ffffff",
           "base-100": "#ffffff",
-          "base-200": "#F8F5FF", // Very light purple
-          "base-300": "#E9DEFF", // Light purple
+          "base-200": "#FFF6F1", // Very light orange
+          "base-300": "#FFD0B5", // Light orange
           "base-content": "#110D2C",
-          info: "#9C43FE",
+          info: "#FF8A50",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
@@ -32,11 +32,11 @@ module.exports = {
       },
       {
         dark: {
-          primary: "#9C43FE", // Purple
+          primary: "#FF8A50", // Light orange
           "primary-content": "#FFF6F1",
           secondary: "#1E1B3D", // Darker blue
           "secondary-content": "#FFF6F1",
-          accent: "#8A3AE0", // Darker purple
+          accent: "#FF6B2C", // Brighter orange
           "accent-content": "#FFF6F1",
           neutral: "#FFF6F1",
           "neutral-content": "#000000",
@@ -44,7 +44,7 @@ module.exports = {
           "base-200": "#000000", // Black
           "base-300": "#111111", // Very dark gray
           "base-content": "#FFF6F1",
-          info: "#9C43FE",
+          info: "#1E1B3D",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
